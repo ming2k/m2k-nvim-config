@@ -12,7 +12,11 @@ return {
           package_pending = "➜",
           package_uninstalled = "✗"
         }
-      }
+      },
+      registry = {
+        -- 设置刷新间隔为 7 天（以秒为单位）
+        frequency = 7 * 24 * 60 * 60,
+      },
     })
 
     local mason_registry = require("mason-registry")
@@ -30,13 +34,21 @@ return {
       end
     end
 
-    mason_registry.update(function()
+    mason_registry.refresh(function()
+      ------------
+      ---  LSP ---
+      ------------
       install_lsp("lua-language-server")
       install_lsp("clangd")
       install_lsp("rust-analyzer")
       install_lsp("gopls")
+      -- WEB
+      install_lsp("html-lsp")
+      install_lsp("css-lsp")
+      install_lsp("typescript-language-server")
+      install_lsp("eslint-lsp")
+      -- Data Serialization
       install_lsp("yaml-language-server")
-    end)
-
+    end) -- refresh mason registry list
   end
 }

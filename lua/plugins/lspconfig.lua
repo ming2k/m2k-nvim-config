@@ -14,43 +14,26 @@ return {
       print("lspconfig not found")
       return
     end
+    local lsp_servers = {
+      { name = "lua_ls",        config_name = "lua_ls",        package_name = "lua-language-server" },
+      { name = "clangd",        config_name = "clangd",        package_name = "clangd" },
+      { name = "rust_analyzer", config_name = "rust_analyzer", package_name = "rust-analyzer" },
+      { name = "gopls",         config_name = "gopls",         package_name = "gopls" },
+      { name = "yamlls",        config_name = "yamlls",        package_name = "yaml-language-server" },
+      { name = "html",          config_name = "html",          package_name = "html-lsp" },
+      { name = "cssls",         config_name = "cssls",         package_name = "css-lsp" },
+      { name = "eslint",        config_name = "eslint",        package_name = "eslint-lsp" },
+      { name = "ts_ls",         config_name = "ts_ls",         package_name = "typescript-language-server" },
+    }
 
-    mason_registry.update(function()
-      local function is_installed(package_name)
-        return mason_registry.get_package(package_name):is_installed()
+    mason_registry.refresh(function()
+      for _, server in ipairs(lsp_servers) do
+        if mason_registry.get_package(server.package_name):is_installed() then
+          lspconfig[server.name].setup(require('lsp_configurations.' .. server.config_name))
+        else
+          print("Language server " .. server.package_name .. " is not installed.")
+        end
       end
-      if is_installed("lua-language-server") then
-        vim.notify("Installing ", vim.log.levels.INFO)
-        lspconfig.lua_ls.setup(require('lsp_configurations.lua_ls'))
-        -- lspconfig.lua_ls.setup({
-        --   settings = {
-        --     Lua = {
-        --       runtime = {
-        --         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        --         version = 'LuaJIT',
-        --       },
-        --       diagnostics = {
-        --         -- Get the language server to recognize the `vim` global
-        --         globals = {'vim', 'mp'},
-        --       },
-        --       -- Do not send telemetry data containing a randomized but unique identifier
-        --       telemetry = {
-        --         enable = false,
-        --       },
-        --     },
-        --   },
-        -- })
-      end
-
-      if is_installed("clangd") then
-        lspconfig.clangd.setup(require('lsp_configurations.clangd'))
-      end
-      if is_installed("rust-analyzer") then
-        lspconfig.rust_analyzer.setup(require('lsp_configurations.rust_analyzer'))
-      end
-      if is_installed("yaml-language-server") then
-        lspconfig.yamlls.setup(require('lsp_configurations.yamlls'))
-      end
-    end)
+    end);
   end
 }
