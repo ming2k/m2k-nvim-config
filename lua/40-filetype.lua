@@ -1,6 +1,6 @@
 -- Config behavior by filetypes
 
--- 设置 Gentoo package 相关文件为 conf 文件类型
+-- config file type of gentoo portage config file
 vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
   pattern = {
     "/etc/portage/package.use",
@@ -9,7 +9,7 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
     "/etc/portage/package.accept_keywords",
     "/etc/portage/package.license",
     "/etc/portage/package.env",
-    -- 如果你使用目录而不是单个文件，可以添加以下模式
+    -- set for dir
     "/etc/portage/package.use/*",
     "/etc/portage/package.mask/*",
     "/etc/portage/package.unmask/*",
