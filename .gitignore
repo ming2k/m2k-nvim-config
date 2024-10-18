@@ -1,2 +1,3 @@
 lua/plugins/
 lua/lsp_configurations/
+lazy-lock.json
