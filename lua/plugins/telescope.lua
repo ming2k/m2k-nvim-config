@@ -61,7 +61,7 @@ return {
         },
       }
       require("telescope").load_extension("file_browser")
-      vim.keymap.set("n", "<space>fb", ":Telescope file_browser<CR>")
+      vim.keymap.set("n", "<leader>fe", ":Telescope file_browser<CR>")
     end
   },
   {

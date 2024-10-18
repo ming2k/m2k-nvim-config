@@ -14,14 +14,14 @@ return {
         }
       },
       registry = {
-        -- 设置刷新间隔为 7 天（以秒为单位）
+        -- set refresh time to 7 days (unit second)
         frequency = 7 * 24 * 60 * 60,
       },
     })
 
     local mason_registry = require("mason-registry")
 
-    -- 函数来安装指定的 LSP
+    -- Encapsulate installation process
     local function install_lsp(package_name)
       if package_name then
         local package = mason_registry.get_package(package_name)
@@ -35,20 +35,19 @@ return {
     end
 
     mason_registry.refresh(function()
-      ------------
-      ---  LSP ---
-      ------------
-      install_lsp("lua-language-server")
+      install_lsp('lua-language-server')
       install_lsp("clangd")
-      install_lsp("rust-analyzer")
+      install_lsp('rust-analyzer')
       install_lsp("gopls")
-      -- WEB
+      install_lsp('pyright')
       install_lsp("html-lsp")
       install_lsp("css-lsp")
-      install_lsp("typescript-language-server")
+      install_lsp('stylelint-lsp') -- css lint lsp
+      install_lsp("typescript-language-server") -- JS/TS lsp
       install_lsp("eslint-lsp")
-      -- Data Serialization
+      install_lsp('json-lsp')
       install_lsp("yaml-language-server")
+      install_lsp('sqlls')
     end) -- refresh mason registry list
   end
 }
