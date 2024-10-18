@@ -37,9 +37,33 @@ return {
       end
 
       local telescope = require("telescope")
+      local actions = require('telescope.actions')
+      local utils = require('utils')
 
-      require("telescope").setup {
-        defaults = get_layout_config(),
+      telescope.setup {
+        defaults = utils.merge_tables_into_first({
+          mappings = {
+            i = {
+              ["<C-c>"] = actions.close
+            }
+          }
+        }, get_layout_config()),
+        pickers = {
+          buffers = {
+            show_all_buffers = true,
+            sort_lastused = true,
+            theme = "dropdown",
+            previewer = false,
+            mappings = {
+              i = {
+                ["<c-d>"] = actions.delete_buffer,
+              },
+              n = {
+                ["dd"] = actions.delete_buffer,
+              }
+            }
+          }
+        }
       }
 
       -- To get telescope-file-browser loaded and working with telescope,
